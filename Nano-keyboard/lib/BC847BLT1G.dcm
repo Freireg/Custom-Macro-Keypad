@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP BC847BLT1G
+D Transistor NPN 45V 100mA hfe200 SOT23 ON Semi BC847BLT1G NPN Bipolar Transistor, 0.1 A, 45 V, 3-Pin SOT-23
+K
+F http://www.onsemi.com/pub/Collateral/BC846ALT1-D.PDF
+$ENDCMP
+#
+#End Doc Library
