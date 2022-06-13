@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "custom-keyboard")(type "KiCad")(uri "${KIPRJMOD}/lib/custom-keyboard.kicad_sym")(options "")(descr ""))
+  (lib (name "LRTBGVSR-U4V2-JW+A6BB-D8+S2U2-")(type "Legacy")(uri "${KIPRJMOD}/lib/LRTBGVSR-U4V2-JW+A6BB-D8+S2U2-.lib")(options "")(descr ""))
+)
