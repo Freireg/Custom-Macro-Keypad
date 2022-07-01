@@ -1,0 +1,28 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model EN12-HN22AF25
+#/1846291/570200/2.49/5/4/Integrated Circuit
+DEF EN12-HN22AF25 IC 0 30 Y Y 1 F N
+F0 "IC" 850 300 50 H V L CNN
+F1 "EN12-HN22AF25" 850 200 50 H V L CNN
+F2 "EN12HN22AF25" 850 100 50 H I L CNN
+F3 "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-DGA5/493788.pdf" 850 0 50 H I L CNN
+F4 "Encoders 12mm Rotary Incremental Encoder" 850 -100 50 H I L CNN "Description"
+F5 "25.5" 850 -200 50 H I L CNN "Height"
+F6 "BI Technologies" 850 -300 50 H I L CNN "Manufacturer_Name"
+F7 "EN12-HN22AF25" 850 -400 50 H I L CNN "Manufacturer_Part_Number"
+F8 "858-EN12-HN22AF25" 850 -500 50 H I L CNN "Mouser Part Number"
+F9 "https://www.mouser.co.uk/ProductDetail/BI-Technologies-TT-Electronics/EN12-HN22AF25?qs=%252BUYXD5bnyXqfVyAwMMjezw%3D%3D" 850 -600 50 H I L CNN "Mouser Price/Stock"
+F10 "EN12-HN22AF25" 850 -700 50 H I L CNN "Arrow Part Number"
+F11 "https://www.arrow.com/en/products/en12-hn22af25/bi-technologies?region=nac" 850 -800 50 H I L CNN "Arrow Price/Stock"
+DRAW
+X A1 A1 0 0 200 R 50 50 0 0 P
+X B1 B1 0 -200 200 R 50 50 0 0 P
+X C1 C1 0 -100 200 R 50 50 0 0 P
+X MH1 MH1 1000 0 200 L 50 50 0 0 P
+X MH2 MH2 1000 -100 200 L 50 50 0 0 P
+P 5 0 1 6 200 100 800 100 800 -300 200 -300 200 100 N
+ENDDRAW
+ENDDEF
+#
+#End Library
