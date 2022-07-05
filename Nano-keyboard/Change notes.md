@@ -1,0 +1,4 @@
+- Remove LEDs to improve battery autonomy
+- Remove the mosfets
+- Adjust the charger module symbol
+- Insert pinouts for battery, I2C, SPI, UART...
