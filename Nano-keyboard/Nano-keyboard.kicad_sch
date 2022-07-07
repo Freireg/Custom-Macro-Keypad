@@ -1956,7 +1956,7 @@
   (symbol (lib_id "power:GND") (at 113.03 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 2582d951-d265-4c57-b1cd-6dfb17070961)
-    (property "Reference" "#PWR?" (id 0) (at 113.03 109.22 0)
+    (property "Reference" "#PWR0107" (id 0) (at 113.03 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 113.03 107.315 0))
@@ -2694,7 +2694,7 @@
   (symbol (lib_id "custom-keyboard:125SH-B-04-TS") (at 113.03 102.87 180) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid e43e3efb-457c-4631-ab67-1c5eb8150efb)
-    (property "Reference" "J?" (id 0) (at 102.87 87.63 0))
+    (property "Reference" "J1" (id 0) (at 102.87 87.63 0))
     (property "Value" "125SH-B-04-TS" (id 1) (at 102.87 90.17 0))
     (property "Footprint" "lib:SHDR4W35P0X125_1X4_800X320X420P" (id 2) (at 96.52 105.41 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
@@ -2972,7 +2972,7 @@
       (reference "#PWR0106") (unit 1) (value "GND") (footprint "")
     )
     (path "/2582d951-d265-4c57-b1cd-6dfb17070961"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0107") (unit 1) (value "GND") (footprint "")
     )
     (path "/e891b433-8f8c-451a-9a1f-eebc6bd34030"
       (reference "B0") (unit 1) (value "Cherry_Switch_1U_PCB") (footprint "lib:SW_Cherry_MX_1.00u_PCB")
@@ -3047,7 +3047,7 @@
       (reference "D10") (unit 1) (value "1N914") (footprint "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal")
     )
     (path "/e43e3efb-457c-4631-ab67-1c5eb8150efb"
-      (reference "J?") (unit 1) (value "125SH-B-04-TS") (footprint "lib:SHDR4W35P0X125_1X4_800X320X420P")
+      (reference "J1") (unit 1) (value "125SH-B-04-TS") (footprint "lib:SHDR4W35P0X125_1X4_800X320X420P")
     )
     (path "/70c10d2e-4f0e-4847-9f68-59ba44ae2259"
       (reference "LED1") (unit 1) (value "598-8610-307F") (footprint "lib:5988610307F")
