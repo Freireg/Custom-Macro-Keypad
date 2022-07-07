@@ -1,4 +1,11 @@
-13252642203097
+16566037220314
+lib
+5988610307F
+598-8610-307F-3
+LED
+0
+4
+4
 lib
 C_0603_1608Metric
 Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator
@@ -17,6 +24,13 @@ lib
 J5019-module
 
 
+0
+4
+4
+lib
+LL3301NF065QG
+LL3301NF065QG
+Switch
 0
 4
 4

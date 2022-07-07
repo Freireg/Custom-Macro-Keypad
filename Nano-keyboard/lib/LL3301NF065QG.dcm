@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LL3301NF065QG
+D E-SWITCH - LL3301NF065QG - TACTILE SW, SPST, 0.05A, 12VDC, SOLDER
+K
+F http://spec_sheets.e-switch.com/specs/P090002.pdf
+$ENDCMP
+#
+#End Doc Library
