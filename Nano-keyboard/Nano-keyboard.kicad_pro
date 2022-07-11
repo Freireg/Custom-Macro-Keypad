@@ -386,7 +386,7 @@
   },
   "pcbnew": {
     "last_paths": {
-      "gencad": "",
+      "gencad": "Nano-keyboard.cad",
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
