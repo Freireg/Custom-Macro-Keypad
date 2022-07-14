@@ -2216,7 +2216,7 @@
     (property "Value" "ESP32-WROOM-32" (id 1) (at 142.9894 40.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "RF_Module:ESP32-WROOM-32" (id 2) (at 140.97 114.3 0)
+    (property "Footprint" "lib:ESP32-WROOM-32" (id 2) (at 140.97 114.3 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf" (id 3) (at 133.35 74.93 0)
@@ -3275,7 +3275,7 @@
       (reference "U1") (unit 1) (value "AMS1117") (footprint "Package_TO_SOT_SMD:SOT-223-3_TabPin2")
     )
     (path "/5daf0f2c-a4b4-4b3d-9961-01231612289d"
-      (reference "U2") (unit 1) (value "ESP32-WROOM-32") (footprint "RF_Module:ESP32-WROOM-32")
+      (reference "U2") (unit 1) (value "ESP32-WROOM-32") (footprint "lib:ESP32-WROOM-32")
     )
     (path "/7f9b420f-6406-4e31-a8a0-d31effd89748"
       (reference "U3") (unit 1) (value "J5019") (footprint "lib:J5019-module")

@@ -390,7 +390,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "../../Nano-keyboard.step",
+      "step": "Nano-keyboard.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
