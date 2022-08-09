@@ -1,12 +1,15 @@
+/**
+ * This example turns the ESP32 into a Bluetooth LE keyboard that writes the words, presses Enter, presses a media key and then Ctrl+Alt+Delete
+ */
 #include <Arduino.h>
 #include <BleKeyboard.h>
 
-
-#define ENCONDER_A    12
-#define ENCONDER_B    14
-#define LED_BLUE      34
-#define LED_RED       32
-#define LED_GREEN     35
+#define FUNC_BUTTON   2
+#define ENCONDER_A    19
+#define ENCONDER_B    21
+#define LED_BLUE      27
+#define LED_RED       26
+#define LED_GREEN     25
 
 BleKeyboard bleKeyboard;
 int aState, aLastState;
@@ -15,7 +18,7 @@ int counter = 0;
 void setup() {
   Serial.begin(9600);
   Serial.println("Starting BLE work!");
-  pinMode(4, INPUT);
+  pinMode(FUNC_BUTTON, INPUT);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
@@ -36,7 +39,7 @@ void loop() {
   if(bleKeyboard.isConnected()) 
   {
     digitalWrite(LED_RED, LOW);
-    if(digitalRead(4))
+    if(digitalRead(FUNC_BUTTON))
     {
       bleKeyboard.print("Key");
       delay(300);
@@ -69,3 +72,6 @@ void loop() {
    aLastState = aState;
   }
 }
+
+
+
