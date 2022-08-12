@@ -19,9 +19,9 @@
 
 #define FUNC_BUTTON   2
 
-#define RLED  25    
+#define RLED  27    
 #define GLED  26
-#define BLED  27
+#define BLED  25
 
 #define ENCONDER_A    21
 #define ENCONDER_B    19
