@@ -19,6 +19,10 @@
 
 #define FUNC_BUTTON   2
 
+#define RLED  25    
+#define GLED  26
+#define BLED  27
+
 #define ENCONDER_A    21
 #define ENCONDER_B    19
 #define inCount   3
@@ -41,6 +45,7 @@ class NanoKeyboard
     uint8_t keyDown[inCount][outCount];
     bool keyLong[inCount][outCount];
     uint8_t selectedSetup = 1;
+    uint8_t oldSetup = 0;
     void readEncoder(void);
     void readFuncButton(void);
     void readMatrix(void);
@@ -49,6 +54,8 @@ class NanoKeyboard
     void runFirstSet(uint8_t button);
     void runSecondSet(uint8_t button);
     void runThirdSet(uint8_t button);
+
+    void ledMode(void);
 
 };
 

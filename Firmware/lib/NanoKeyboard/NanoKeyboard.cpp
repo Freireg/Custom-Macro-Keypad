@@ -32,6 +32,10 @@ void NanoKeyboard::setup(void)
   pinMode(ENCONDER_A, INPUT_PULLUP);
   pinMode(ENCONDER_B, INPUT_PULLUP);
 
+  pinMode(RLED, OUTPUT);
+  pinMode(GLED, OUTPUT);
+  pinMode(BLED, OUTPUT);
+
   for(int i =0; i < outCount; i++)
   {
     pinMode(columnsPin[i], OUTPUT);
@@ -68,8 +72,9 @@ void NanoKeyboard::readFuncButton(void)
     }
     else
     {
-    //  selectedSetup++;
+      selectedSetup++;
     }
+    ledMode();
     delay(300);
   }
 }
@@ -255,9 +260,184 @@ void NanoKeyboard::runFirstSet(uint8_t button)
 void NanoKeyboard::runSecondSet(uint8_t button)
 {
   //Do your verification routine
+  switch (button)
+  {
+  case 1:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B1); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B1[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 2:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B2); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B2[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 3:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B3); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B3[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 4:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B4); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B4[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 5:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B5); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B5[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 6:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B6); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B6[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 7:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B7); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B7[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 8:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B8); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B8[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 9:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B9); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B9[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 10:
+    for (size_t i = 0; i < sizeof(SET2_KEY_B10); i++)
+    {
+      bleKeyboard.press(SET2_KEY_B10[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  default:
+    break;
+  }
 }
 
 void NanoKeyboard::runThirdSet(uint8_t button)
 {
   //Do your verification routine
+  switch (button)
+  {
+  case 1:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B1); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B1[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 2:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B2); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B2[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 3:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B3); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B3[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 4:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B4); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B4[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 5:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B5); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B5[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 6:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B6); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B6[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 7:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B7); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B7[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 8:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B8); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B8[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 9:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B9); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B9[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  case 10:
+    for (size_t i = 0; i < sizeof(SET3_KEY_B10); i++)
+    {
+      bleKeyboard.press(SET3_KEY_B10[i]);
+    }
+    bleKeyboard.releaseAll();    
+    break;
+  default:
+    break;
+  }
+}
+
+void NanoKeyboard::ledMode(void)
+{
+  switch (selectedSetup)
+  {
+  case 1:
+    digitalWrite(GLED, LOW);
+    digitalWrite(BLED, LOW);
+    digitalWrite(RLED,HIGH);
+    break;
+  case 2:
+    digitalWrite(BLED, LOW);
+    digitalWrite(RLED, LOW);
+    digitalWrite(GLED,HIGH);
+    break;
+  case 3:
+    digitalWrite(RLED, LOW);
+    digitalWrite(GLED, LOW);
+    digitalWrite(BLED,HIGH);
+    break;
+  
+  default:
+    break;
+  }
 }
