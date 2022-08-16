@@ -46,7 +46,8 @@ class NanoKeyboard
     bool keyLong[inCount][outCount];
     uint8_t selectedSetup = 1;
     uint8_t oldSetup = 0;
-    void readEncoder(void);
+    void readLeftEncoder(uint8_t *encoder);
+    void readRightEncoder(uint8_t *encoder);
     void readFuncButton(void);
     void readMatrix(void);
     void keyPressed(uint8_t row, uint8_t col);

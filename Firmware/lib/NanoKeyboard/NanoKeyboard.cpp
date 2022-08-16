@@ -12,10 +12,8 @@
 
 uint8_t columnsPin[] = {4, 16, 17, 18}; //Columns 1, 2, 3 and 4 
 uint8_t rowPin[] = {33, 32, 35};  //Rows 1, 2 and 3
-//const char *button[3][4] = {{"B1", "B2", "B3", "B4"}, 
-//                            {"B5", "B6", "B7", "B8"},
-//                                  {"B9", "B10"}};
-//
+uint8_t left_encoder[] = {19, 21}; //Pin A and B
+uint8_t right_enconder[] = {22, 23};
 uint8_t button[3][4] = {{1, 2, 3, 4},
                         {5, 6, 7, 8},
                           {9, 10}};
@@ -29,8 +27,11 @@ NanoKeyboard::~NanoKeyboard(){}
 
 void NanoKeyboard::setup(void)
 {
-  pinMode(ENCONDER_A, INPUT_PULLUP);
-  pinMode(ENCONDER_B, INPUT_PULLUP);
+  pinMode(left_encoder[0], INPUT_PULLUP);
+  pinMode(left_encoder[1], INPUT_PULLUP);
+
+  pinMode(right_enconder[0], INPUT_PULLUP);
+  pinMode(right_enconder[1], INPUT_PULLUP);
 
   pinMode(RLED, OUTPUT);
   pinMode(GLED, OUTPUT);
@@ -50,6 +51,7 @@ void NanoKeyboard::setup(void)
   bleKeyboard.begin();
 
   aLastState = digitalRead(ENCONDER_A);
+  ledMode();   
 }
 
 void NanoKeyboard::begin(void)
@@ -57,7 +59,8 @@ void NanoKeyboard::begin(void)
   if(bleKeyboard.isConnected()) 
   {
     readFuncButton();
-    readEncoder();
+    readLeftEncoder(left_encoder);
+    readRightEncoder(right_enconder);
     readMatrix();
   }
 }
@@ -79,31 +82,148 @@ void NanoKeyboard::readFuncButton(void)
   }
 }
 
-void NanoKeyboard::readEncoder(void)
+void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
 {
-  aState = digitalRead(ENCONDER_A);
+  aState = digitalRead(encoder[0]);
 
   if(aState != aLastState)
   {
-  if(digitalRead(ENCONDER_B) != aState)
-  {
-    counter++;
-    bleKeyboard.press(KEY_LEFT_CTRL);
-    bleKeyboard.press(KEY_NUM_PLUS);
-    bleKeyboard.releaseAll();
-  }
-  else
-  {
-    counter--;
-    bleKeyboard.press(KEY_LEFT_CTRL);
-    bleKeyboard.press(KEY_NUM_MINUS);
-    bleKeyboard.releaseAll();
-  }
+    if(digitalRead(encoder[1]) != aState)
+    {
+      switch (selectedSetup)
+      {
+      case 1:
+        for(uint8_t i = 0; i < sizeof(SET1_ENCODER1_RIGHT); i++)
+        {
+          bleKeyboard.press(SET1_ENCODER1_RIGHT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 2:
+        for(uint8_t i = 0; i < sizeof(SET2_ENCODER1_RIGHT); i++)
+        {
+          bleKeyboard.press(SET2_ENCODER1_RIGHT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 3:
+        for(uint8_t i = 0; i < sizeof(SET3_ENCODER1_RIGHT); i++)
+        {
+          bleKeyboard.press(SET3_ENCODER1_RIGHT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      default:
+        break;
+      }
 
-  delay(100);
+    }
+    else
+    {
+      switch (selectedSetup)
+      {
+      case 1:
+        for(uint8_t i = 0; i < sizeof(SET1_ENCODER1_LEFT); i++)
+        {
+          bleKeyboard.press(SET1_ENCODER1_LEFT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 2:
+        for(uint8_t i = 0; i < sizeof(SET2_ENCODER1_LEFT); i++)
+        {
+          bleKeyboard.press(SET2_ENCODER1_LEFT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 3:
+        for(uint8_t i = 0; i < sizeof(SET3_ENCODER1_LEFT); i++)
+        {
+          bleKeyboard.press(SET3_ENCODER1_LEFT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      default:
+        break;
+    }
+
+  delay(200);
   }
 
   aLastState = aState;
+  }
+}
+
+void NanoKeyboard::readRightEncoder(uint8_t *encoder)
+{
+  aState = digitalRead(encoder[0]);
+
+  if(aState != aLastState)
+  {
+    if(digitalRead(encoder[1]) != aState)
+    {
+      switch (selectedSetup)
+      {
+      case 1:
+        for(uint8_t i = 0; i < sizeof(SET1_ENCODER2_RIGHT); i++)
+        {
+          bleKeyboard.press(SET1_ENCODER2_RIGHT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 2:
+        for(uint8_t i = 0; i < sizeof(SET2_ENCODER2_RIGHT); i++)
+        {
+          bleKeyboard.press(SET2_ENCODER2_RIGHT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 3:
+        for(uint8_t i = 0; i < sizeof(SET3_ENCODER2_RIGHT); i++)
+        {
+          bleKeyboard.press(SET3_ENCODER2_RIGHT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      default:
+        break;
+      }
+
+    }
+    else
+    {
+      switch (selectedSetup)
+      {
+      case 1:
+        for(uint8_t i = 0; i < sizeof(SET1_ENCODER2_LEFT); i++)
+        {
+          bleKeyboard.press(SET1_ENCODER2_LEFT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 2:
+        for(uint8_t i = 0; i < sizeof(SET2_ENCODER2_LEFT); i++)
+        {
+          bleKeyboard.press(SET2_ENCODER2_LEFT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      case 3:
+        for(uint8_t i = 0; i < sizeof(SET3_ENCODER2_LEFT); i++)
+        {
+          bleKeyboard.press(SET3_ENCODER2_LEFT[i]);
+        }
+        bleKeyboard.releaseAll();
+        break;
+      default:
+        break;
+    }
+
+  delay(200);
+  }
+
+  aLastState = aState;
+  }
 }
 
 void NanoKeyboard::readMatrix(void)
