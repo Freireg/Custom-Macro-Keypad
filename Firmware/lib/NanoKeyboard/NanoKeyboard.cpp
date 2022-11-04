@@ -11,12 +11,15 @@
 #include "NanoKeyboard.hpp"
 
 uint8_t columnsPin[] = {4, 16, 17, 18}; //Columns 1, 2, 3 and 4 
-uint8_t rowPin[] = {33, 32, 35};  //Rows 1, 2 and 3
+uint8_t rowPin[] = {33, 32, 34};  //Rows 1, 2 and 3
 uint8_t left_encoder[] = {19, 21}; //Pin A and B
 uint8_t right_enconder[] = {22, 23};
 uint8_t button[3][4] = {{1, 2, 3, 4},
                         {5, 6, 7, 8},
                           {9, 10}};
+
+AiEsp32RotaryEncoder LeftEncoder= AiEsp32RotaryEncoder(ROTARY_ENCODER2_A_PIN, ROTARY_ENCODER2_B_PIN, -1, ROTARY_ENCODER_STEPS);
+AiEsp32RotaryEncoder RightEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER1_A_PIN, ROTARY_ENCODER1_B_PIN, -1, ROTARY_ENCODER_STEPS);
 
 NanoKeyboard::NanoKeyboard()
 {
@@ -25,13 +28,24 @@ NanoKeyboard::NanoKeyboard()
 
 NanoKeyboard::~NanoKeyboard(){}
 
+void IRAM_ATTR readEncoder1ISR()
+{
+  RightEncoder.readEncoder_ISR();
+}
+
+void IRAM_ATTR readEncoder2ISR()
+{
+  LeftEncoder.readEncoder_ISR();
+}
+
+
 void NanoKeyboard::setup(void)
 {
-  pinMode(left_encoder[0], INPUT_PULLUP);
-  pinMode(left_encoder[1], INPUT_PULLUP);
+  pinMode(ROTARY_ENCODER2_A_PIN, INPUT_PULLUP);
+  pinMode(ROTARY_ENCODER2_B_PIN, INPUT_PULLUP);
 
-  pinMode(right_enconder[0], INPUT_PULLUP);
-  pinMode(right_enconder[1], INPUT_PULLUP);
+  pinMode(ROTARY_ENCODER1_A_PIN, INPUT_PULLUP);
+  pinMode(ROTARY_ENCODER1_B_PIN, INPUT_PULLUP);
 
   pinMode(RLED, OUTPUT);
   pinMode(GLED, OUTPUT);
@@ -49,20 +63,48 @@ void NanoKeyboard::setup(void)
   }
 
   bleKeyboard.begin();
+  
 
-  aLastState = digitalRead(ENCONDER_A);
-  ledMode();   
+  LeftEncoder.begin();
+  LeftEncoder.setup(readEncoder2ISR);
+  LeftEncoder.setBoundaries(0, 1000, false);
+  LeftEncoder.setAcceleration(250);
+
+  RightEncoder.begin();
+  RightEncoder.setup(readEncoder1ISR);
+  RightEncoder.setBoundaries(0, 1000, false);
+  RightEncoder.setAcceleration(250);
+
 }
 
-void NanoKeyboard::begin(void)
+uint8_t NanoKeyboard::begin(void)
 {
   if(bleKeyboard.isConnected()) 
   {
-    readFuncButton();
-    readLeftEncoder(left_encoder);
-    readRightEncoder(right_enconder);
-    readMatrix();
+    return 1;
   }
+  else
+  {
+    if(digitalRead(BLED))
+    {
+      digitalWrite(BLED, LOW);
+    }
+    else 
+    {
+      digitalWrite(BLED, HIGH);
+    }
+    delay(150);
+    return 0;
+  }
+  
+}
+
+void NanoKeyboard::run(void)
+{
+  readFuncButton();
+  readLeftEncoder(left_encoder);
+  readRightEncoder(right_enconder);
+  readMatrix();
 }
 
 void NanoKeyboard::readFuncButton(void)
@@ -80,15 +122,16 @@ void NanoKeyboard::readFuncButton(void)
     ledMode();
     delay(300);
   }
+  else{ ledMode(); }
+  
 }
 
 void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
 {
-  aState = digitalRead(encoder[0]);
-
-  if(aState != aLastState)
+  aState = LeftEncoder.readEncoder();
+  if(LeftEncoder.encoderChanged())
   {
-    if(digitalRead(encoder[1]) != aState)
+    if(aState != aLastState)
     {
       switch (selectedSetup)
       {
@@ -147,20 +190,21 @@ void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
         break;
     }
 
-  delay(200);
+  delayMicroseconds(600);
   }
 
   aLastState = aState;
   }
 }
 
+
 void NanoKeyboard::readRightEncoder(uint8_t *encoder)
 {
-  aState = digitalRead(encoder[0]);
+  bState = RightEncoder.readEncoder();
 
-  if(aState != aLastState)
+  if(bState != bLastState)
   {
-    if(digitalRead(encoder[1]) != aState)
+    if(RightEncoder.readEncoder() != bState)
     {
       switch (selectedSetup)
       {
@@ -219,10 +263,10 @@ void NanoKeyboard::readRightEncoder(uint8_t *encoder)
         break;
     }
 
-  delay(200);
+  delayMicroseconds(600);
   }
 
-  aLastState = aState;
+  bLastState = bState;
   }
 }
 
@@ -544,19 +588,21 @@ void NanoKeyboard::ledMode(void)
   case 1:
     digitalWrite(GLED, LOW);
     digitalWrite(BLED, LOW);
+    delayMicroseconds(10);
     digitalWrite(RLED,HIGH);
     break;
   case 2:
     digitalWrite(BLED, LOW);
     digitalWrite(RLED, LOW);
+    delayMicroseconds(10);
     digitalWrite(GLED,HIGH);
     break;
   case 3:
     digitalWrite(RLED, LOW);
     digitalWrite(GLED, LOW);
+    delayMicroseconds(10);
     digitalWrite(BLED,HIGH);
-    break;
-  
+    break;  
   default:
     break;
   }

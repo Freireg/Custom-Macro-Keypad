@@ -14,6 +14,7 @@
 
 #include <Arduino.h>
 #include <BleKeyboard.h>
+#include <AiEsp32RotaryEncoder.h>
 #include "KeyboardLayout.hpp"
 
 
@@ -23,8 +24,14 @@
 #define GLED  26
 #define BLED  25
 
-#define ENCONDER_A    21
-#define ENCONDER_B    19
+#define ROTARY_ENCODER2_A_PIN     19
+#define ROTARY_ENCODER2_B_PIN     21
+
+#define ROTARY_ENCODER1_A_PIN     23
+#define ROTARY_ENCODER1_B_PIN     22
+
+#define ROTARY_ENCODER_STEPS      4
+
 #define inCount   3
 #define outCount  4
 #define longPressDelay  350
@@ -35,12 +42,13 @@ class NanoKeyboard
   public:
     NanoKeyboard(void);
     ~NanoKeyboard(void);
-    void begin(void);
+    void run(void);
+    uint8_t begin(void);
     void setup(void);
     
   private:
     BleKeyboard bleKeyboard;
-    int aState, aLastState;
+    long aState, aLastState, bState, bLastState;
     int counter = 0;
     uint8_t keyDown[inCount][outCount];
     bool keyLong[inCount][outCount];
