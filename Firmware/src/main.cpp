@@ -10,5 +10,8 @@ void setup(){
 }
 
 void loop(){
-  keyboard.begin();
+  if(keyboard.begin())
+  {
+    keyboard.run();
+  }
 }

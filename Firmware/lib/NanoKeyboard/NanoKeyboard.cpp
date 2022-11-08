@@ -11,12 +11,12 @@
 #include "NanoKeyboard.hpp"
 
 uint8_t columnsPin[] = {4, 16, 17, 18}; //Columns 1, 2, 3 and 4 
-uint8_t rowPin[] = {33, 32, 35};  //Rows 1, 2 and 3
+uint8_t rowPin[] = {33, 32, 34};  //Rows 1, 2 and 3
 uint8_t left_encoder[] = {19, 21}; //Pin A and B
 uint8_t right_enconder[] = {22, 23};
 uint8_t button[3][4] = {{1, 2, 3, 4},
                         {5, 6, 7, 8},
-                          {9, 10}};
+                        {9, 10, 0, 0}};
 
 NanoKeyboard::NanoKeyboard()
 {
@@ -37,7 +37,7 @@ void NanoKeyboard::setup(void)
   pinMode(GLED, OUTPUT);
   pinMode(BLED, OUTPUT);
 
-  for(int i =0; i < outCount; i++)
+  for(int i = 0; i < outCount; i++)
   {
     pinMode(columnsPin[i], OUTPUT);
     digitalWrite(columnsPin[i], LOW);
@@ -50,19 +50,39 @@ void NanoKeyboard::setup(void)
 
   bleKeyboard.begin();
 
-  aLastState = digitalRead(ENCONDER_A);
-  ledMode();   
+  aLastState = digitalRead(ROTARY_ENCODER2_A_PIN);
+  bLastState = digitalRead(ROTARY_ENCODER2_A_PIN);
+    
 }
 
-void NanoKeyboard::begin(void)
+uint8_t NanoKeyboard::begin(void)
 {
   if(bleKeyboard.isConnected()) 
   {
-    readFuncButton();
-    readLeftEncoder(left_encoder);
-    readRightEncoder(right_enconder);
-    readMatrix();
+    return 1;
   }
+  else
+  {
+    if(digitalRead(BLED))
+    {
+      digitalWrite(BLED, LOW);
+    }
+    else 
+    {
+      digitalWrite(BLED, HIGH);
+    }
+    delay(150);
+    return 0;
+  }
+  
+}
+
+void NanoKeyboard::run(void)
+{
+  readFuncButton();
+  readLeftEncoder(left_encoder);
+  readRightEncoder(right_enconder);
+  readMatrix();
 }
 
 void NanoKeyboard::readFuncButton(void)
@@ -80,6 +100,8 @@ void NanoKeyboard::readFuncButton(void)
     ledMode();
     delay(300);
   }
+  else{ ledMode(); }
+  
 }
 
 void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
@@ -147,7 +169,7 @@ void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
         break;
     }
 
-  delay(200);
+  delayMicroseconds(600);
   }
 
   aLastState = aState;
@@ -156,9 +178,9 @@ void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
 
 void NanoKeyboard::readRightEncoder(uint8_t *encoder)
 {
-  aState = digitalRead(encoder[0]);
+  bState = digitalRead(encoder[0]);
 
-  if(aState != aLastState)
+  if(bState != bLastState)
   {
     if(digitalRead(encoder[1]) != aState)
     {
@@ -219,10 +241,10 @@ void NanoKeyboard::readRightEncoder(uint8_t *encoder)
         break;
     }
 
-  delay(200);
+  delayMicroseconds(600);
   }
 
-  aLastState = aState;
+  bLastState = bState;
   }
 }
 
@@ -544,19 +566,21 @@ void NanoKeyboard::ledMode(void)
   case 1:
     digitalWrite(GLED, LOW);
     digitalWrite(BLED, LOW);
+    delayMicroseconds(10);
     digitalWrite(RLED,HIGH);
     break;
   case 2:
     digitalWrite(BLED, LOW);
     digitalWrite(RLED, LOW);
+    delayMicroseconds(10);
     digitalWrite(GLED,HIGH);
     break;
   case 3:
     digitalWrite(RLED, LOW);
     digitalWrite(GLED, LOW);
+    delayMicroseconds(10);
     digitalWrite(BLED,HIGH);
-    break;
-  
+    break;  
   default:
     break;
   }
