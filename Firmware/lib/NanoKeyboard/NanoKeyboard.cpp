@@ -16,10 +16,8 @@ uint8_t left_encoder[] = {19, 21}; //Pin A and B
 uint8_t right_enconder[] = {22, 23};
 uint8_t button[3][4] = {{1, 2, 3, 4},
                         {5, 6, 7, 8},
-                          {9, 10}};
+                        {9, 10, 0, 0}};
 
-AiEsp32RotaryEncoder LeftEncoder= AiEsp32RotaryEncoder(ROTARY_ENCODER2_A_PIN, ROTARY_ENCODER2_B_PIN, -1, ROTARY_ENCODER_STEPS);
-AiEsp32RotaryEncoder RightEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER1_A_PIN, ROTARY_ENCODER1_B_PIN, -1, ROTARY_ENCODER_STEPS);
 
 NanoKeyboard::NanoKeyboard()
 {
@@ -27,16 +25,6 @@ NanoKeyboard::NanoKeyboard()
 }
 
 NanoKeyboard::~NanoKeyboard(){}
-
-void IRAM_ATTR readEncoder1ISR()
-{
-  RightEncoder.readEncoder_ISR();
-}
-
-void IRAM_ATTR readEncoder2ISR()
-{
-  LeftEncoder.readEncoder_ISR();
-}
 
 
 void NanoKeyboard::setup(void)
@@ -51,7 +39,7 @@ void NanoKeyboard::setup(void)
   pinMode(GLED, OUTPUT);
   pinMode(BLED, OUTPUT);
 
-  for(int i =0; i < outCount; i++)
+  for(int i = 0; i < outCount; i++)
   {
     pinMode(columnsPin[i], OUTPUT);
     digitalWrite(columnsPin[i], LOW);
@@ -63,18 +51,10 @@ void NanoKeyboard::setup(void)
   }
 
   bleKeyboard.begin();
-  
 
-  LeftEncoder.begin();
-  LeftEncoder.setup(readEncoder2ISR);
-  LeftEncoder.setBoundaries(0, 1000, false);
-  LeftEncoder.setAcceleration(250);
-
-  RightEncoder.begin();
-  RightEncoder.setup(readEncoder1ISR);
-  RightEncoder.setBoundaries(0, 1000, false);
-  RightEncoder.setAcceleration(250);
-
+  aLastState = digitalRead(ROTARY_ENCODER2_A_PIN);
+  bLastState = digitalRead(ROTARY_ENCODER2_A_PIN);
+    
 }
 
 uint8_t NanoKeyboard::begin(void)
@@ -128,8 +108,8 @@ void NanoKeyboard::readFuncButton(void)
 
 void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
 {
-  aState = LeftEncoder.readEncoder();
-  if(LeftEncoder.encoderChanged())
+  aState = digitalRead(encoder[0]);
+  if(aState != aLastState)
   {
     if(aState != aLastState)
     {
@@ -200,7 +180,7 @@ void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
 
 void NanoKeyboard::readRightEncoder(uint8_t *encoder)
 {
-  bState = RightEncoder.readEncoder();
+  bState = digitalRead(encoder[0]);
 
   if(bState != bLastState)
   {

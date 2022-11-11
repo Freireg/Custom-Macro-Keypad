@@ -31,8 +31,8 @@ const uint8_t SET1_KEY_B10[] = {KEY_F10};
 const uint8_t SET1_ENCODER1_RIGHT[] = {KEY_LEFT_CTRL, KEY_NUM_PLUS};
 const uint8_t SET1_ENCODER1_LEFT[] = {KEY_LEFT_CTRL, KEY_NUM_MINUS};
 
-const uint8_t SET1_ENCODER2_RIGHT[] = {KEY_LEFT_CTRL, KEY_NUM_PLUS};
-const uint8_t SET1_ENCODER2_LEFT[] = {KEY_LEFT_CTRL, KEY_NUM_MINUS};
+const uint8_t SET1_ENCODER2_RIGHT[] = {KEY_UP_ARROW};
+const uint8_t SET1_ENCODER2_LEFT[] = {KEY_DOWN_ARROW};
 
 //Second Keyboard commands set
 const uint8_t SET2_KEY_B1[] = {KEY_LEFT_CTRL, KEY_LEFT_ALT, 'g'}; 
@@ -43,8 +43,8 @@ const uint8_t SET2_KEY_B5[] = {KEY_F8};
 const uint8_t SET2_KEY_B6[] = {};
 const uint8_t SET2_KEY_B7[] = {};
 const uint8_t SET2_KEY_B8[] = {};
-const uint8_t SET2_KEY_B9[] = {};
-const uint8_t SET2_KEY_B10[] = {};
+const uint8_t SET2_KEY_B9[] = {'9'};
+const uint8_t SET2_KEY_B10[] = {'A'};
 
 const uint8_t SET2_ENCODER1_RIGHT[] = {KEY_F5};
 const uint8_t SET2_ENCODER1_LEFT[] = {KEY_F7};
