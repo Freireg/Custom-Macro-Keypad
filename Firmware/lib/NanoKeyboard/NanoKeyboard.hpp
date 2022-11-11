@@ -14,7 +14,6 @@
 
 #include <Arduino.h>
 #include <BleKeyboard.h>
-#include <AiEsp32RotaryEncoder.h>
 #include "KeyboardLayout.hpp"
 
 

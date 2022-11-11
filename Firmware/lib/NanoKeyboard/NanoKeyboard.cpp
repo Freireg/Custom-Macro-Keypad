@@ -18,7 +18,6 @@ uint8_t button[3][4] = {{1, 2, 3, 4},
                         {5, 6, 7, 8},
                         {9, 10, 0, 0}};
 
-
 NanoKeyboard::NanoKeyboard()
 {
 
@@ -26,14 +25,13 @@ NanoKeyboard::NanoKeyboard()
 
 NanoKeyboard::~NanoKeyboard(){}
 
-
 void NanoKeyboard::setup(void)
 {
-  pinMode(ROTARY_ENCODER2_A_PIN, INPUT_PULLUP);
-  pinMode(ROTARY_ENCODER2_B_PIN, INPUT_PULLUP);
+  pinMode(left_encoder[0], INPUT_PULLUP);
+  pinMode(left_encoder[1], INPUT_PULLUP);
 
-  pinMode(ROTARY_ENCODER1_A_PIN, INPUT_PULLUP);
-  pinMode(ROTARY_ENCODER1_B_PIN, INPUT_PULLUP);
+  pinMode(right_enconder[0], INPUT_PULLUP);
+  pinMode(right_enconder[1], INPUT_PULLUP);
 
   pinMode(RLED, OUTPUT);
   pinMode(GLED, OUTPUT);
@@ -109,9 +107,10 @@ void NanoKeyboard::readFuncButton(void)
 void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
 {
   aState = digitalRead(encoder[0]);
+
   if(aState != aLastState)
   {
-    if(aState != aLastState)
+    if(digitalRead(encoder[1]) != aState)
     {
       switch (selectedSetup)
       {
@@ -177,14 +176,13 @@ void NanoKeyboard::readLeftEncoder(uint8_t *encoder)
   }
 }
 
-
 void NanoKeyboard::readRightEncoder(uint8_t *encoder)
 {
   bState = digitalRead(encoder[0]);
 
   if(bState != bLastState)
   {
-    if(RightEncoder.readEncoder() != bState)
+    if(digitalRead(encoder[1]) != aState)
     {
       switch (selectedSetup)
       {
