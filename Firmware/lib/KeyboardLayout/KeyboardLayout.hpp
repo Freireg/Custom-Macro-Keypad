@@ -35,16 +35,16 @@ const uint8_t SET1_ENCODER2_RIGHT[] = {KEY_UP_ARROW};
 const uint8_t SET1_ENCODER2_LEFT[] = {KEY_DOWN_ARROW};
 
 //Second Keyboard commands set
-const uint8_t SET2_KEY_B1[] = {KEY_LEFT_CTRL, KEY_LEFT_ALT, 'g'}; 
-const uint8_t SET2_KEY_B2[] = {KEY_LEFT_CTRL, 'b'};
-const uint8_t SET2_KEY_B3[] = {};
-const uint8_t SET2_KEY_B4[] = {};
-const uint8_t SET2_KEY_B5[] = {KEY_F8};
-const uint8_t SET2_KEY_B6[] = {};
-const uint8_t SET2_KEY_B7[] = {};
-const uint8_t SET2_KEY_B8[] = {};
-const uint8_t SET2_KEY_B9[] = {'9'};
-const uint8_t SET2_KEY_B10[] = {'A'};
+const uint8_t SET2_KEY_B1[] = {KEY_F8}; 
+const uint8_t SET2_KEY_B2[] = {KEY_F5};
+const uint8_t SET2_KEY_B3[] = {KEY_F6};
+const uint8_t SET2_KEY_B4[] = {KEY_F7};
+const uint8_t SET2_KEY_B5[] = {KEY_LEFT_CTRL, 'b'};
+const uint8_t SET2_KEY_B6[] = {KEY_F11};
+const uint8_t SET2_KEY_B7[] = {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'b'};
+const uint8_t SET2_KEY_B8[] = {KEY_LEFT_CTRL, KEY_F2};
+const uint8_t SET2_KEY_B9[] = {};
+const uint8_t SET2_KEY_B10[] = {};
 
 const uint8_t SET2_ENCODER1_RIGHT[] = {KEY_F5};
 const uint8_t SET2_ENCODER1_LEFT[] = {KEY_F7};
@@ -53,13 +53,13 @@ const uint8_t SET2_ENCODER2_RIGHT[] = {};
 const uint8_t SET2_ENCODER2_LEFT[] = {};
 
 //Third Keyboard commands set
-const uint8_t SET3_KEY_B1[] = {KEY_LEFT_ALT, KEY_F8}; 
-const uint8_t SET3_KEY_B2[] = {'k'};
-const uint8_t SET3_KEY_B3[] = {};
-const uint8_t SET3_KEY_B4[] = {};
-const uint8_t SET3_KEY_B5[] = {KEY_LEFT_CTRL, KEY_F8};
-const uint8_t SET3_KEY_B6[] = {};
-const uint8_t SET3_KEY_B7[] = {};
+const uint8_t SET3_KEY_B1[] = {KEY_LEFT_CTRL, 'd'}; 
+const uint8_t SET3_KEY_B2[] = {KEY_LEFT_CTRL, 'f'};
+const uint8_t SET3_KEY_B3[] = {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'f'};
+const uint8_t SET3_KEY_B4[] = {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'n'};
+const uint8_t SET3_KEY_B5[] = {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'b'};
+const uint8_t SET3_KEY_B6[] = {KEY_LEFT_CTRL, KEY_LEFT_ALT, 'u'};
+const uint8_t SET3_KEY_B7[] = {KEY_LEFT_CTRL, KEY_LEFT_SHIFT};
 const uint8_t SET3_KEY_B8[] = {};
 const uint8_t SET3_KEY_B9[] = {};
 const uint8_t SET3_KEY_B10[] = {};
