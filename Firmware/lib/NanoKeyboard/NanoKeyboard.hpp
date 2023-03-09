@@ -12,60 +12,13 @@
 #ifndef NANOKEYBOARD_H_
 #define NANOKEYBOARD_H_
 
-#include <Arduino.h>
-#include <BleKeyboard.h>
-#include "KeyboardLayout.hpp"
-
-
-#define FUNC_BUTTON   2
-
-#define RLED  27    
-#define GLED  26
-#define BLED  25
-
-#define ENCONDER_A    21
-#define ENCONDER_B    19
-
-#define ROTARY_ENCODER2_A_PIN     19
-#define ROTARY_ENCODER2_B_PIN     21
-
-#define ROTARY_ENCODER1_A_PIN     23
-#define ROTARY_ENCODER1_B_PIN     22
-
-#define inCount   3
-#define outCount  4
-#define longPressDelay  350
-#define spamSpeed 15
-
-class NanoKeyboard
+struct NanoKeyboardLayout_t
 {
-  public:
-    NanoKeyboard(void);
-    ~NanoKeyboard(void);
-    uint8_t begin(void);
-    void setup(void);
-    void run(void);
-    
-  private:
-    BleKeyboard bleKeyboard;
-    int aState, aLastState, bState, bLastState;
-    int counter = 0;
-    uint8_t keyDown[inCount][outCount];
-    bool keyLong[inCount][outCount];
-    uint8_t selectedSetup = 1;
-    uint8_t oldSetup = 0;
-    void readLeftEncoder(uint8_t *encoder);
-    void readRightEncoder(uint8_t *encoder);
-    void readFuncButton(void);
-    void readMatrix(void);
-    void keyPressed(uint8_t row, uint8_t col);
-    void keyReset(uint8_t row, uint8_t col);
-    void runFirstSet(uint8_t button);
-    void runSecondSet(uint8_t button);
-    void runThirdSet(uint8_t button);
-
-    void ledMode(void);
+  char keyMacros[3][4][3];
+  char encMacros[2][2][3];
+  int setup;
 
 };
+
 
 #endif
