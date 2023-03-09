@@ -15,43 +15,12 @@ void readMatrix(void);
 
 //----------------------------
 typedef struct{
-  char keyMacros[3][4][MAX_MACRO_SIZE];
+  const char keyMacros[3][4][MAX_MACRO_SIZE];
   char encMacros[2][2][MAX_MACRO_SIZE];
-  int setup;
-} Layout;
+  uint8_t setup;
+} Layout_t;
 
-Layout myLayout = {
-  {
-    {
-    {KEY_F10, KEY_F11, KEY_F11}, //B1
-    {KEY_F10},          //B2
-    {KEY_F10},          //B3
-    {KEY_F10}           //B4
-    },
-    {
-    {KEY_F10, KEY_F11, KEY_F11}, //B5
-    {KEY_F10},          //B6
-    {KEY_F10},          //B7
-    {KEY_F10}           //B8
-    },
-    {
-    {KEY_F10, KEY_F11, KEY_F11}, //B9
-    {KEY_F10}          //B10
-    }
-  },
-  {
-    { //Left encoder macros
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-    },
-    { //Right encoder macros
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-    }
-  },
-
-  0
-};
+Layout_t myLayout[3];
 
 BleKeyboard NanoKeyboard("NanoKeyboard");
 
@@ -63,39 +32,12 @@ uint8_t rowsPin[] = {33, 32, 34};  //Rows 1, 2 and 3
 uint8_t left_encoder[] = {19, 21}; //Pin A and B
 uint8_t right_enconder[] = {22, 23};
 int aLastState, bLastState;
-//-------------------------------------------------------------
-// Define the key macros for each key
-// char keyMacros[rows][cols][MAX_MACRO_SIZE] = 
-// {
-// {
-//   {KEY_F10, KEY_F11, KEY_F11}, //B1
-//   {KEY_F10},          //B2
-//   {KEY_F10},          //B3
-//   {KEY_F10}           //B4
-// },
-// {
-//   {KEY_F10},          //B5
-//   {KEY_F10},          //B6
-//   {KEY_F10},          //B7
-//   {KEY_F10}           //B8
-// },
-// {
-//   {KEY_F10},          //B9
-//   {KEY_F10},          //B10
-// }
-// };
+uint8_t layoutID = 0;
 
-// char encoderMacros[2][2][MAX_MACRO_SIZE] =
-// {
-//   { //Left encoder macros
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-//   },
-//   { //Right encoder macros
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-//   }
-// };
+uint8_t keyDown[inCount][outCount];
+bool keyLong[inCount][outCount];
+//-------------------------------------------------------------
+
 //-----------------------------------------------
 
 void setup() 
@@ -130,6 +72,7 @@ void setup()
   NanoKeyboard.begin();
 }
 
+
 void loop()
 {
   //Checks if keyboard is connected
@@ -158,7 +101,40 @@ void readEncoders()
 
 void readMatrix(void)
 {
-  pressMacro(myLayout.keyMacros[0][0]);
+  for(int i = 0; i < outCount; i++)
+  {
+    digitalWrite(columnsPin[i], HIGH);  //Setting one column HIGH      
+    delayMicroseconds(5);
+
+    for(int j = 0; j < inCount; j++)
+    {
+      if(digitalRead(rowsPin[j]) == HIGH)
+      {
+        if(keyDown[j][i] == 0) //If it's the first time the function has been called for this key
+        {
+          pressMacro(myLayout[layoutID].keyMacros[j][i]);
+
+        }
+        else if(keyLong[j][i] && keyDown[j][i] > spamSpeed)
+        {
+          pressMacro(myLayout[layoutID].keyMacros[j][i]);
+        }
+        else if(keyDown[j][i] > longPressDelay) //If the key has been held longer that longPressDelay, it switch into spam mode
+        {
+          keyLong[j][i] = true;
+        }
+        keyDown[j][i]++;
+      }
+      else if(keyDown[j][i] != 0)
+      {
+        // keyReset(j, i);
+        keyDown[j][i] = 0;
+        keyLong[j][i] = false;
+      }
+    }
+    digitalWrite(columnsPin[i], LOW);
+    delayMicroseconds(500);
+  }
 }
 
 void readFunction()
@@ -175,6 +151,45 @@ void pressMacro(char *macro)
   NanoKeyboard.releaseAll();
 
 }
+
+void keyReset(uint8_t row, uint8_t col)
+{
+  keyDown[row][col] = 0;
+  keyLong[row][col] = false;
+}
+
+void configLayout(uint8_t i, uint8_t setup)
+{
+  myLayout[i].encMacros = 
+  {
+    {KEY_F10, KEY_F11, KEY_F11}, //B1
+    {KEY_F10},          //B2
+    {KEY_F10},          //B3
+    {KEY_F10}           //B4
+    },
+    {
+    {KEY_F10, KEY_F11, KEY_F11}, //B5
+    {KEY_F10},          //B6
+    {KEY_F10},          //B7
+    {KEY_F10}           //B8
+    },
+    {
+    {KEY_F10, KEY_F11, KEY_F11}, //B9
+    {KEY_F10}          //B10
+    };
+
+  myLayout[i].keyMacros = 
+  { //Left encoder macros
+    {KEY_F10, KEY_F11, KEY_F11}, //Turn left
+    {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+  },
+  { //Right encoder macros
+    {KEY_F10, KEY_F11, KEY_F11}, //Turn left
+    {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+  };
+  
+  myLayout[i].setup = setup;
+};
 
 
 
