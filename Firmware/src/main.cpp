@@ -1,45 +1,23 @@
-#include <Arduino.h>
-#include <BLEDevice.h>
-#include <BleKeyboard.h>
 #include "NanoKeyboard.hpp"
-
-
-#define inCount   3
-#define outCount  4
-#define MAX_MACRO_SIZE 3
-
-
-//Protoypes
-void pressMacro(char *macro);
-void readMatrix(void);
-
 //----------------------------
-typedef struct{
-  const char keyMacros[3][4][MAX_MACRO_SIZE];
-  char encMacros[2][2][MAX_MACRO_SIZE];
-  uint8_t setup;
-} Layout_t;
-
-Layout_t myLayout[3];
-
+Layout_t myLayout[MAX_LAYOUT_SETUP] = {0};
 BleKeyboard NanoKeyboard("NanoKeyboard");
 
 // Define the pins for the 12 keys arranged in a 3x4 matrix
-const int rows = 3;
-const int cols = 4;
-uint8_t columnsPin[] = {4, 16, 17, 18}; //Columns 1, 2, 3 and 4 
-uint8_t rowsPin[] = {33, 32, 34};  //Rows 1, 2 and 3
-uint8_t left_encoder[] = {19, 21}; //Pin A and B
-uint8_t right_enconder[] = {22, 23};
+const int rows = inCount;
+const int cols = outCount;
 int aLastState, bLastState;
 uint8_t layoutID = 0;
+
+uint8_t columnsPin[] = {4, 16, 17, 18};   //Columns 1, 2, 3 and 4 
+uint8_t rowsPin[] = {33, 32, 34};         //Rows 1, 2 and 3
+uint8_t left_encoder[] = {19, 21};        //Pin A and B
+uint8_t right_enconder[] = {22, 23};      //Pin A and B
+
 
 uint8_t keyDown[inCount][outCount];
 bool keyLong[inCount][outCount];
 //-------------------------------------------------------------
-
-//-----------------------------------------------
-
 void setup() 
 {
   // Initialize the pins for the key matrix
@@ -94,11 +72,15 @@ void loop()
   }
 }
 
-void readEncoders()
+void readEncoders(void)
 {
 
 }
 
+/*
+ * @brief Read the 10 buttons matrix by triggering each column one by one and reading each row
+ * 
+ */
 void readMatrix(void)
 {
   for(int i = 0; i < outCount; i++)
@@ -137,11 +119,15 @@ void readMatrix(void)
   }
 }
 
-void readFunction()
+void readFunction(void)
 {
 
 }
-
+/**
+ * @brief Uses the Blekeyboard to emulate pressing the macro buttons
+ * 
+ * @param macro 
+ */
 void pressMacro(char *macro)
 {
   for (size_t i = 0; i < MAX_MACRO_SIZE; i++)
@@ -152,44 +138,53 @@ void pressMacro(char *macro)
 
 }
 
+/**
+ * @todo Remove
+*/
 void keyReset(uint8_t row, uint8_t col)
 {
   keyDown[row][col] = 0;
   keyLong[row][col] = false;
 }
 
-void configLayout(uint8_t i, uint8_t setup)
-{
-  myLayout[i].encMacros = 
-  {
-    {KEY_F10, KEY_F11, KEY_F11}, //B1
-    {KEY_F10},          //B2
-    {KEY_F10},          //B3
-    {KEY_F10}           //B4
-    },
-    {
-    {KEY_F10, KEY_F11, KEY_F11}, //B5
-    {KEY_F10},          //B6
-    {KEY_F10},          //B7
-    {KEY_F10}           //B8
-    },
-    {
-    {KEY_F10, KEY_F11, KEY_F11}, //B9
-    {KEY_F10}          //B10
-    };
+/**
+ * @brief @todo
+ * 
+ * @param i 
+ * @param setup 
+ */
+// void configLayout(uint8_t i, uint8_t setup)
+// {
+//   myLayout[i].encMacros = 
+//   {
+//     {KEY_F10, KEY_F11, KEY_F11}, //B1
+//     {KEY_F10},          //B2
+//     {KEY_F10},          //B3
+//     {KEY_F10}           //B4
+//     },
+//     {
+//     {KEY_F10, KEY_F11, KEY_F11}, //B5
+//     {KEY_F10},          //B6
+//     {KEY_F10},          //B7
+//     {KEY_F10}           //B8
+//     },
+//     {
+//     {KEY_F10, KEY_F11, KEY_F11}, //B9
+//     {KEY_F10}          //B10
+//     };
 
-  myLayout[i].keyMacros = 
-  { //Left encoder macros
-    {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-    {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-  },
-  { //Right encoder macros
-    {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-    {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-  };
+//   myLayout[i].keyMacros = 
+//   { //Left encoder macros
+//     {KEY_F10, KEY_F11, KEY_F11}, //Turn left
+//     {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+//   },
+//   { //Right encoder macros
+//     {KEY_F10, KEY_F11, KEY_F11}, //Turn left
+//     {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+//   };
   
-  myLayout[i].setup = setup;
-};
+//   myLayout[i].setup = setup;
+// };
 
 
 
