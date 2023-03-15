@@ -1,18 +1,18 @@
 #include "NanoKeyboard.hpp"
 //----------------------------
-Layout_t myLayout[MAX_LAYOUT_SETUP] = {0};
+Layout_t myLayout[MAX_LAYOUT_SETUP];// = {0};
 BleKeyboard NanoKeyboard("NanoKeyboard");
 
 // Define the pins for the 12 keys arranged in a 3x4 matrix
 const int rows = inCount;
 const int cols = outCount;
-int aLastState, bLastState;
+int aLastState, bLastState, aState, bState;
 uint8_t layoutID = 0;
 
 uint8_t columnsPin[] = {4, 16, 17, 18};   //Columns 1, 2, 3 and 4 
 uint8_t rowsPin[] = {33, 32, 34};         //Rows 1, 2 and 3
 uint8_t left_encoder[] = {19, 21};        //Pin A and B
-uint8_t right_enconder[] = {22, 23};      //Pin A and B
+uint8_t right_encoder[] = {22, 23};      //Pin A and B
 
 
 uint8_t keyDown[inCount][outCount];
@@ -36,11 +36,11 @@ void setup()
   pinMode(left_encoder[0], INPUT_PULLUP);
   pinMode(left_encoder[1], INPUT_PULLUP);
 
-  pinMode(right_enconder[0], INPUT_PULLUP);
-  pinMode(right_enconder[1], INPUT_PULLUP);
+  pinMode(right_encoder[0], INPUT_PULLUP);
+  pinMode(right_encoder[1], INPUT_PULLUP);
 
   aLastState = digitalRead(left_encoder[0]);
-  bLastState = digitalRead(right_enconder[0]);
+  bLastState = digitalRead(right_encoder[0]);
 
   //---------------------------------------------
   // Configure Led pins
@@ -53,31 +53,103 @@ void setup()
 
 void loop()
 {
+  myLayout[0] = {
+  {
+    {
+    {KEY_F10, KEY_F11, KEY_F11}, //B1
+    {KEY_F10},          //B2
+    {KEY_F10},          //B3
+    {KEY_F10}           //B4
+    },
+    {
+    {KEY_F10, KEY_F11, KEY_F11}, //B5
+    {KEY_F10},          //B6
+    {KEY_F10},          //B7
+    {KEY_F10}           //B8
+    },
+    {
+    {KEY_F10, KEY_F11, KEY_F11}, //B9
+    {KEY_F10}          //B10
+    }
+  },
+  {
+    { //Left encoder macros
+      {KEY_F10, KEY_F11, KEY_F11}, //Turn left
+      {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+    },
+    { //Right encoder macros
+      {KEY_F10, KEY_F11, KEY_F11}, //Turn left
+      {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+    }
+  },
+
+  0
+};
   //Checks if keyboard is connected
   if(NanoKeyboard.isConnected())
   {
     //Function key pooling 
-    //@todo
+    readFunction();
     //--------------------
 
     //Reading encoders
-    //@todo
+    readEncoders();
     //-------------------
 
     //Reading button matrix
-    //@todo
+    readMatrix();
     //-------------------
 
-
+    //Waits for any external Bluetooth request
+    //@todo
+    //-------------------
+  }
+  else
+  {
+    //If not connected, run led blink pattern
   }
 }
 
+/**
+ * @brief 
+ * 
+ */
 void readEncoders(void)
 {
+  aState = digitalRead(left_encoder[0]);
+  bState = digitalRead(right_encoder[0]);
 
+  if(aState != aLastState)
+  {
+    if(digitalRead(left_encoder[1]) != aState)
+    {
+      pressMacro(myLayout[layoutID].encMacros[0][0]);
+    }
+    else
+    {
+      pressMacro(myLayout[layoutID].encMacros[0][1]);
+    }
+  }
+
+  if(bState != bLastState)
+  {
+    if(digitalRead(left_encoder[1]) != bState)
+    {
+      pressMacro(myLayout[layoutID].encMacros[1][0]);
+    }
+    else
+    {
+      pressMacro(myLayout[layoutID].encMacros[1][1]);
+    }
+  }
+  
+  delayMicroseconds(600);
+  
+  bLastState = bState;  
+  aLastState = aState;
 }
 
-/*
+/**
  * @brief Read the 10 buttons matrix by triggering each column one by one and reading each row
  * 
  */
@@ -119,18 +191,35 @@ void readMatrix(void)
   }
 }
 
+/**
+ * @brief 
+ * 
+ */
 void readFunction(void)
 {
-
+  if(digitalRead(FUNC_BUTTON))
+  {
+    if(layoutID == MAX_LAYOUT_SETUP)
+    {
+      layoutID = 1;
+    }
+    else
+    {
+      layoutID++;
+    }
+    ledMode(layoutID);
+    delay(300);
+  }
+  else{ ledMode(layoutID); }
 }
 /**
  * @brief Uses the Blekeyboard to emulate pressing the macro buttons
  * 
  * @param macro 
  */
-void pressMacro(char *macro)
+void pressMacro(uint8_t *macro)
 {
-  for (size_t i = 0; i < MAX_MACRO_SIZE; i++)
+  for (size_t i = 0; i < sizeof(*macro); i++)
   {
     NanoKeyboard.press(macro[i]);
   }
@@ -153,41 +242,61 @@ void keyReset(uint8_t row, uint8_t col)
  * @param i 
  * @param setup 
  */
-void configLayout(uint8_t i, uint8_t setup)
+void configLayout(uint8_t *string, uint8_t setup)
 {
-  myLayout[i].keyMacros = 
+  for (uint8_t row = 0; row < 3; row++)
   {
+    for(uint8_t col = 0;col < 4; col++)
     {
-    {0xCB}, //B1
-    {0xCB},          //B2
-    {0xCB},          //B3
-    {0xCB}           //B4
-    },
-    {
-    {0xCB}, //B5
-    {0xCB},          //B6
-    {0xCB},          //B7
-    {0xCB}           //B8
-    },
-    {
-    {0xCB}, //B9
-    {0xCB}          //B10
+      for (uint8_t i = 0;i < MAX_MACRO_SIZE; i++)
+      {
+        myLayout[setup].keyMacros[row][col][i] = string[i];//Remove the i on string
+      }
     }
-  };
-  myLayout[i].encMacros = 
-  {
-    { //Left encoder macros
-      {0xCB, 0xCC, 0xCC}, //Turn left
-      {0xCB, 0xCC, 0xCC}, //Turn right
-    },
-    { //Right encoder macros
-      {0xCB, 0xCC, 0xCC}, //Turn left
-      {0xCB, 0xCC, 0xCC}, //Turn right
-    }
-  };
+  }
+  // myLayout[setup].encMacros = {
+  //   { //Left encoder macros
+  //     {0xCB, 0xCC, 0xCC}, //Turn left
+  //     {0xCB, 0xCC, 0xCC}, //Turn right
+  //   },
+  //   { //Right encoder macros
+  //     {0xCB, 0xCC, 0xCC}, //Turn left
+  //     {0xCB, 0xCC, 0xCC}, //Turn right
+  //   }
+  // };
   
-  myLayout[i].setup = setup;
+  myLayout[setup].setup = setup;
 };
 
-
+/**
+ * @brief Turn on the led on the respective layout color
+ * 
+ * @param selectedSetup 
+ */
+void ledMode(uint8_t selectedSetup)
+{
+  switch (selectedSetup)
+  {
+  case 1:
+    digitalWrite(GLED, LOW);
+    digitalWrite(BLED, LOW);
+    delayMicroseconds(10);
+    digitalWrite(RLED,HIGH);
+    break;
+  case 2:
+    digitalWrite(BLED, LOW);
+    digitalWrite(RLED, LOW);
+    delayMicroseconds(10);
+    digitalWrite(GLED,HIGH);
+    break;
+  case 3:
+    digitalWrite(RLED, LOW);
+    digitalWrite(GLED, LOW);
+    delayMicroseconds(10);
+    digitalWrite(BLED,HIGH);
+    break;  
+  default:
+    break;
+  }
+}
 

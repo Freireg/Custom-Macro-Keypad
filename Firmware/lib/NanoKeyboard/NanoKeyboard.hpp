@@ -25,18 +25,25 @@
 #define longPressDelay  350
 #define spamSpeed 15
 
+#define FUNC_BUTTON   2
+
+#define RLED  27    
+#define GLED  26
+#define BLED  25
 
 typedef struct{
-  char keyMacros[3][4][MAX_MACRO_SIZE];
-  char encMacros[2][2][MAX_MACRO_SIZE];
+  uint8_t keyMacros[3][4][MAX_MACRO_SIZE];
+  uint8_t encMacros[2][2][MAX_MACRO_SIZE];
   uint8_t setup;
 } Layout_t;
 
 
 //Protoypes
+void ledMode(uint8_t selectedSetup);
+void readFunction(void);
 void readMatrix(void);
 void readEncoders(void);
 void readFunction(void);
-void pressMacro(char *macro);
+void pressMacro(uint8_t *macro);
 
 #endif
