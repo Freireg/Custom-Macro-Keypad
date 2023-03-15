@@ -27,7 +27,7 @@
 
 
 typedef struct{
-  const char keyMacros[3][4][MAX_MACRO_SIZE];
+  char keyMacros[3][4][MAX_MACRO_SIZE];
   char encMacros[2][2][MAX_MACRO_SIZE];
   uint8_t setup;
 } Layout_t;

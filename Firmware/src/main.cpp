@@ -153,38 +153,41 @@ void keyReset(uint8_t row, uint8_t col)
  * @param i 
  * @param setup 
  */
-// void configLayout(uint8_t i, uint8_t setup)
-// {
-//   myLayout[i].encMacros = 
-//   {
-//     {KEY_F10, KEY_F11, KEY_F11}, //B1
-//     {KEY_F10},          //B2
-//     {KEY_F10},          //B3
-//     {KEY_F10}           //B4
-//     },
-//     {
-//     {KEY_F10, KEY_F11, KEY_F11}, //B5
-//     {KEY_F10},          //B6
-//     {KEY_F10},          //B7
-//     {KEY_F10}           //B8
-//     },
-//     {
-//     {KEY_F10, KEY_F11, KEY_F11}, //B9
-//     {KEY_F10}          //B10
-//     };
-
-//   myLayout[i].keyMacros = 
-//   { //Left encoder macros
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-//   },
-//   { //Right encoder macros
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-//     {KEY_F10, KEY_F11, KEY_F11}, //Turn right
-//   };
+void configLayout(uint8_t i, uint8_t setup)
+{
+  myLayout[i].keyMacros = 
+  {
+    {
+    {0xCB}, //B1
+    {0xCB},          //B2
+    {0xCB},          //B3
+    {0xCB}           //B4
+    },
+    {
+    {0xCB}, //B5
+    {0xCB},          //B6
+    {0xCB},          //B7
+    {0xCB}           //B8
+    },
+    {
+    {0xCB}, //B9
+    {0xCB}          //B10
+    }
+  };
+  myLayout[i].encMacros = 
+  {
+    { //Left encoder macros
+      {0xCB, 0xCC, 0xCC}, //Turn left
+      {0xCB, 0xCC, 0xCC}, //Turn right
+    },
+    { //Right encoder macros
+      {0xCB, 0xCC, 0xCC}, //Turn left
+      {0xCB, 0xCC, 0xCC}, //Turn right
+    }
+  };
   
-//   myLayout[i].setup = setup;
-// };
+  myLayout[i].setup = setup;
+};
 
 
 
