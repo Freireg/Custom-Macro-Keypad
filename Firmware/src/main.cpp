@@ -56,30 +56,30 @@ void loop()
   myLayout[0] = {
   {
     {
-    {KEY_F10, KEY_F11, KEY_F11}, //B1
-    {KEY_F10},          //B2
-    {KEY_F10},          //B3
-    {KEY_F10}           //B4
+    {KEY_F1, '1'}, //B1
+    {KEY_F2, '2'},          //B2
+    {KEY_F3, '3'},          //B3
+    {KEY_F4, '4'}           //B4
     },
     {
-    {KEY_F10, KEY_F11, KEY_F11}, //B5
-    {KEY_F10},          //B6
-    {KEY_F10},          //B7
-    {KEY_F10}           //B8
+    {KEY_F5, '5'}, //B5
+    {KEY_F6, '6'},          //B6
+    {KEY_F7, '7'},          //B7
+    {KEY_F8, '8'}           //B8
     },
     {
-    {KEY_F10, KEY_F11, KEY_F11}, //B9
-    {KEY_F10}          //B10
+    {KEY_F9, '9'}, //B9
+    {KEY_F10, '0'}          //B10
     }
   },
   {
     { //Left encoder macros
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+      {KEY_LEFT_CTRL, KEY_NUM_PLUS}, //Turn left
+      {KEY_LEFT_CTRL, KEY_NUM_MINUS}, //Turn right
     },
     { //Right encoder macros
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn left
-      {KEY_F10, KEY_F11, KEY_F11}, //Turn right
+      {'1', '2', '3'}, //Turn left
+      {'4', '5', '6'}, //Turn right
     }
   },
 
@@ -219,7 +219,7 @@ void readFunction(void)
  */
 void pressMacro(uint8_t *macro)
 {
-  for (size_t i = 0; i < sizeof(*macro); i++)
+  for (size_t i = 0; i < MAX_MACRO_SIZE; i++)
   {
     NanoKeyboard.press(macro[i]);
   }
