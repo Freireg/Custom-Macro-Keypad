@@ -1,7 +1,7 @@
 #include "NanoKeyboard.hpp"
 //----------------------------
 Layout_t myLayout[MAX_LAYOUT_SETUP];// = {0};
-BleKeyboard NanoKeyboard("NanoKeyboard");
+BleKeyboard NanoKeyboard("NanoKeyboard", "Espressif", 100);
 
 // Define the pins for the 12 keys arranged in a 3x4 matrix
 const int rows = inCount;
@@ -17,6 +17,9 @@ uint8_t right_encoder[] = {22, 23};      //Pin A and B
 
 uint8_t keyDown[inCount][outCount];
 bool keyLong[inCount][outCount];
+
+unsigned long prevMillis = 0;
+const unsigned long blinkInterval = 1000;
 //-------------------------------------------------------------
 void setup() 
 {
@@ -53,6 +56,7 @@ void setup()
 
 void loop()
 {
+  unsigned long currentMillis = millis();
   myLayout[0] = {
   {
     {
@@ -85,6 +89,38 @@ void loop()
 
   0
 };
+  myLayout[1] = {
+  {
+    {
+    {KEY_F1, '1'}, //B1
+    {KEY_F2, '2'},          //B2
+    {KEY_F3, '3'},          //B3
+    {KEY_F4, '4'}           //B4
+    },
+    {
+    {KEY_F5, '5'}, //B5
+    {KEY_F6, '6'},          //B6
+    {KEY_F7, '7'},          //B7
+    {KEY_F8, '8'}           //B8
+    },
+    {
+    {KEY_F9, '9'}, //B9
+    {KEY_F10, '0'}          //B10
+    }
+  },
+  {
+    { //Left encoder macros
+      {KEY_LEFT_CTRL, KEY_NUM_PLUS}, //Turn left
+      {KEY_LEFT_CTRL, KEY_NUM_MINUS}, //Turn right
+    },
+    { //Right encoder macros
+      {'1', '2', '3'}, //Turn left
+      {'4', '5', '6'}, //Turn right
+    }
+  },
+
+  1
+};
   //Checks if keyboard is connected
   if(NanoKeyboard.isConnected())
   {
@@ -106,7 +142,15 @@ void loop()
   }
   else
   {
+    digitalWrite(GLED, LOW);    
+    digitalWrite(RLED, LOW);
     //If not connected, run led blink pattern
+    if(currentMillis - prevMillis >= blinkInterval)
+    {
+      prevMillis = currentMillis;
+      digitalWrite(BLED, !digitalRead(BLED));
+      
+    }
   }
 }
 
@@ -201,7 +245,7 @@ void readFunction(void)
   {
     if(layoutID == MAX_LAYOUT_SETUP)
     {
-      layoutID = 1;
+      layoutID = 0;
     }
     else
     {
@@ -277,19 +321,19 @@ void ledMode(uint8_t selectedSetup)
 {
   switch (selectedSetup)
   {
-  case 1:
+  case 0:
     digitalWrite(GLED, LOW);
     digitalWrite(BLED, LOW);
     delayMicroseconds(10);
     digitalWrite(RLED,HIGH);
     break;
-  case 2:
+  case 1:
     digitalWrite(BLED, LOW);
     digitalWrite(RLED, LOW);
     delayMicroseconds(10);
     digitalWrite(GLED,HIGH);
     break;
-  case 3:
+  case 2:
     digitalWrite(RLED, LOW);
     digitalWrite(GLED, LOW);
     delayMicroseconds(10);

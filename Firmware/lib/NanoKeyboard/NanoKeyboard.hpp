@@ -19,7 +19,7 @@
 #define inCount           3
 #define outCount          4
 #define MAX_MACRO_SIZE    3
-#define MAX_LAYOUT_SETUP  3
+#define MAX_LAYOUT_SETUP  2
 
 
 #define longPressDelay  350
