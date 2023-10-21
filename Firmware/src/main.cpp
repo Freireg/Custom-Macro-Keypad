@@ -18,8 +18,11 @@ uint8_t right_encoder[] = {22, 23};      //Pin A and B
 uint8_t keyDown[inCount][outCount];
 bool keyLong[inCount][outCount];
 
+uint8_t encoDown[inCount][outCount];
+bool encoLong[inCount][outCount];
+
 unsigned long prevMillis = 0;
-const unsigned long blinkInterval = 1000;
+const unsigned long blinkInterval = 500;
 //-------------------------------------------------------------
 void setup() 
 {
@@ -42,6 +45,10 @@ void setup()
   pinMode(right_encoder[0], INPUT_PULLUP);
   pinMode(right_encoder[1], INPUT_PULLUP);
 
+  pinMode(GLED, OUTPUT);
+  pinMode(RLED, OUTPUT);
+  pinMode(BLED, OUTPUT);
+
   aLastState = digitalRead(left_encoder[0]);
   bLastState = digitalRead(right_encoder[0]);
 
@@ -60,30 +67,30 @@ void loop()
   myLayout[0] = {
   {
     {
-    {KEY_F1, '1'}, //B1
-    {KEY_F2, '2'},          //B2
-    {KEY_F3, '3'},          //B3
-    {KEY_F4, '4'}           //B4
+    {KEY_LEFT_CTRL, 'C'},          //B1
+    {KEY_LEFT_CTRL, 'V'},          //B2
+    {KEY_LEFT_CTRL, 'Z'},          //B3
+    {KEY_LEFT_CTRL, 'X'}           //B4
     },
     {
-    {KEY_F5, '5'}, //B5
-    {KEY_F6, '6'},          //B6
-    {KEY_F7, '7'},          //B7
-    {KEY_F8, '8'}           //B8
+    {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'N'}, //B5
+    {KEY_LEFT_CTRL, 'O'},          //B6
+    {KEY_LEFT_CTRL, 'K', 'O'},          //B7
+    {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'P'}           //B8
     },
     {
-    {KEY_F9, '9'}, //B9
+    {KEY_F9, '9'},          //B9
     {KEY_F10, '0'}          //B10
     }
   },
   {
     { //Left encoder macros
-      {KEY_LEFT_CTRL, KEY_NUM_PLUS}, //Turn left
-      {KEY_LEFT_CTRL, KEY_NUM_MINUS}, //Turn right
+      {KEY_LEFT_SHIFT, KEY_RIGHT_ARROW}, //Turn RIGHT
+      {KEY_LEFT_SHIFT, KEY_LEFT_ARROW}, //Turn LEFT
     },
     { //Right encoder macros
-      {'1', '2', '3'}, //Turn left
-      {'4', '5', '6'}, //Turn right
+      {KEY_LEFT_CTRL, KEY_PAGE_UP}, //Turn left
+      {KEY_LEFT_CTRL, KEY_PAGE_DOWN}, //Turn right
     }
   },
 
@@ -92,9 +99,9 @@ void loop()
   myLayout[1] = {
   {
     {
-    {KEY_F1, '1'}, //B1
-    {KEY_F2, '2'},          //B2
-    {KEY_F3, '3'},          //B3
+    {KEY_LEFT_CTRL, KEY_LEFT_ALT, 'T'}, //B1
+    {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'C'},          //B2
+    {KEY_LEFT_CTRL, KEY_LEFT_SHIFT, 'V'},          //B3
     {KEY_F4, '4'}           //B4
     },
     {
@@ -110,12 +117,12 @@ void loop()
   },
   {
     { //Left encoder macros
-      {KEY_LEFT_CTRL, KEY_NUM_PLUS}, //Turn left
-      {KEY_LEFT_CTRL, KEY_NUM_MINUS}, //Turn right
+      {KEY_LEFT_CTRL, KEY_NUM_PLUS}, //Turn right
+      {KEY_LEFT_CTRL, KEY_NUM_MINUS}, //Turn left 
     },
     { //Right encoder macros
-      {'1', '2', '3'}, //Turn left
-      {'4', '5', '6'}, //Turn right
+      {KEY_LEFT_CTRL, KEY_PAGE_UP}, //Turn left
+      {KEY_LEFT_CTRL, KEY_PAGE_DOWN}, //Turn right
     }
   },
 
@@ -177,7 +184,7 @@ void readEncoders(void)
 
   if(bState != bLastState)
   {
-    if(digitalRead(left_encoder[1]) != bState)
+    if(digitalRead(right_encoder[1]) != bState)
     {
       pressMacro(myLayout[layoutID].encMacros[1][0]);
     }

@@ -1,6 +1,6 @@
 # Custom-Macro-Keypad
 Custom macro mechanical keypad using a ESP32
-
+![Macro Board](Resources/PCB%20Design.png)
 # Index
 - [Overview](#overview)
 - [Hardware](#hardware)
